@@ -3,7 +3,6 @@ import { InitialModal } from '../../modules/InitialModal';
 import { NpsModal } from '../../modules/NpsModal';
 import { FeedbackModal } from '../../modules/FeedbackModal';
 
-
 export const ModalSwitcher = () => {
   const [step, setStep] = useState(0);   // Estado para controlar o fluxo dos modais
   const [login, setLogin] = useState<string>('');

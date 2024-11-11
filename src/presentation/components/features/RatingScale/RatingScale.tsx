@@ -13,7 +13,8 @@ export const RatingScale: React.FC<RatingScaleProps> = ({ score, setScore }: Rat
         <S.RatingButton
           key={i}
           score={i}
-          selected={score === i}
+          $selected={score === i}
+          aria-pressed={score === i}
           onClick={() => setScore(i)}
         >
           {i}

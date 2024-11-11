@@ -28,7 +28,8 @@ export const ButtonGroup = ({ onSelect }: ButtonGroupProps) => {
         {options.map((option) => (
           <S.Button
             key={option.value}
-            isSelected={selectedValue === option.value}
+            $isSelected={selectedValue === option.value}
+            aria-pressed={selectedValue === option.value}
             onClick={() => handleSelect(option.value)}
           >
             {option.label}

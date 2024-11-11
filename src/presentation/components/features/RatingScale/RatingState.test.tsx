@@ -1,11 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { RatingScale } from './RatingScale';
-import { describe, expect, it } from 'vitest';
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
+import 'jest-styled-components';
 
 describe('RatingScale', () => {
   it('renderiza o número correto de botões', () => {
-    const setScore = jest.fn();
+    const setScore = vi.fn();
     render(<RatingScale score={5} setScore={setScore} />);
 
     // Verify that there are 11 rating buttons
@@ -14,11 +14,11 @@ describe('RatingScale', () => {
 
     // Verify that the selected button is the one with the score of 5
     const selectedButton = screen.getByText('5');
-    expect(selectedButton).toHaveClass('selected');
+    expect(selectedButton).toHaveAttribute('aria-pressed', 'true');
   });
 
   it('chama a função setScore quando um botão de classificação é clicado', () => {
-    const setScore = jest.fn();
+    const setScore = vi.fn();
     render(<RatingScale score={3} setScore={setScore} />);
 
     // Click on the rating button with a score of 7
@@ -30,13 +30,13 @@ describe('RatingScale', () => {
   });
 
   it('lida com uma pontuação nula', () => {
-    const setScore = jest.fn();
+    const setScore = vi.fn();
     render(<RatingScale score={null} setScore={setScore} />);
   
     // Verify that none of the buttons are selected
     const ratingButtons = screen.getAllByRole('button');
     ratingButtons.forEach((button) => {
-      expect(button).not.toHaveClass('selected');
+      expect(button).toHaveAttribute('aria-pressed', 'false');
     });
   });
 });

@@ -1,7 +1,6 @@
 import { render, fireEvent, screen } from '@testing-library/react';
 import { Button } from './Button';
-import { describe, expect, it } from 'vitest';
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
 
 describe('Botão', () => {
   it('renderiza o botão com o rótulo correto', () => {
@@ -10,7 +9,7 @@ describe('Botão', () => {
   });
 
   it('chama a função onClick quando o botão é clicado', () => {
-    const mockOnClick = jest.fn();
+    const mockOnClick = vi.fn();
     render(<Button label="Clique-me" onClick={mockOnClick} />);
     fireEvent.click(screen.getByText('Clique-me'));
     expect(mockOnClick).toHaveBeenCalledTimes(1);

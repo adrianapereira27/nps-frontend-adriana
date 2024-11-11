@@ -1,11 +1,11 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ButtonGroup } from './ButtonGroup';
-import { describe, expect, it } from 'vitest';
-import { jest } from '@jest/globals';
+import { describe, expect, it, vi } from 'vitest';
+import 'jest-styled-components';
 
 describe('ButtonGroup', () => {
   it('renderiza o número correto de botões', () => {
-    const onSelect = jest.fn();
+    const onSelect = vi.fn();
     render(<ButtonGroup onSelect={onSelect} />);
 
     const buttons = screen.getAllByRole('button');
@@ -13,7 +13,7 @@ describe('ButtonGroup', () => {
   });
 
   it('chama a callback onSelect com o valor correto quando um botão é clicado', () => {
-    const onSelect = jest.fn();
+    const onSelect = vi.fn();
     render(<ButtonGroup onSelect={onSelect} />);
 
     const button = screen.getByText('Slowness / Crash');
@@ -23,27 +23,48 @@ describe('ButtonGroup', () => {
   });
 
   it('destaca o botão selecionado', () => {
-    const onSelect = jest.fn();
+    const onSelect = vi.fn();
     render(<ButtonGroup onSelect={onSelect} />);
 
-    const button = screen.getByText('Interface / Appearance');
+    // Clica no botão "Product access"
+    const button = screen.getByText('Product access');
     fireEvent.click(button);
 
-    expect(button).toHaveClass('selected');
+    // Verifica se o onSelect foi chamado com o valor correto
+    expect(onSelect).toHaveBeenCalledWith(1);
+
+    // Verifica se o botão tem o atributo de selecionado
+    expect(button).toHaveAttribute('aria-pressed', 'true');
   });
 
-  it('limpa o botão anteriormente selecionado quando um novo é clicado', () => {
-    const onSelect = jest.fn();
+  it('permite selecionar diferentes opções', () => {
+    const onSelect = vi.fn();
     render(<ButtonGroup onSelect={onSelect} />);
 
+    // Clica em uma opção
     const firstButton = screen.getByText('Product access');
-    const secondButton = screen.getByText('Connection / Internet');
-
     fireEvent.click(firstButton);
-    expect(firstButton).toHaveClass('selected');
+    expect(onSelect).toHaveBeenCalledWith(1);
+    expect(firstButton).toHaveAttribute('aria-pressed', 'true');
 
+    // Clica em outra opção
+    const secondButton = screen.getByText('Bugs');
     fireEvent.click(secondButton);
-    expect(firstButton).not.toHaveClass('selected');
-    expect(secondButton).toHaveClass('selected');
+    expect(onSelect).toHaveBeenCalledWith(5);
+    expect(secondButton).toHaveAttribute('aria-pressed', 'true');
+    expect(firstButton).toHaveAttribute('aria-pressed', 'false');
   });
+
+  it('renderiza todas as opções corretamente', () => {
+    const onSelect = vi.fn();
+    render(<ButtonGroup onSelect={onSelect} />);
+
+    expect(screen.getByText('Product access')).toBeInTheDocument();
+    expect(screen.getByText('Connection / Internet')).toBeInTheDocument();
+    expect(screen.getByText('Slowness / Crash')).toBeInTheDocument();
+    expect(screen.getByText('Interface / Appearance')).toBeInTheDocument();
+    expect(screen.getByText('Bugs')).toBeInTheDocument();
+    expect(screen.getByText('Others')).toBeInTheDocument();
+  });
+  
 });

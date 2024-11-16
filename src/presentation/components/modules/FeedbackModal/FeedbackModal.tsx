@@ -41,8 +41,12 @@ export const FeedbackModal = ({ onFinish, onReturn, login, score, selectedOption
     <S.FeedbackDialog>
       <AppBar />
       <h4>We appreaciate your feedback!</h4>
-      <h6>How can we improve? Use the buttons or the comments field below to deepen your evaluation.</h6>      
-      {score <= 7 && <ButtonGroup onSelect={onOptionSelect} />}
+      {score < 7 && (
+        <>
+          <h6>How can we improve? Use the buttons or the comments field below to deepen your evaluation.</h6>
+          <ButtonGroup onSelect={onOptionSelect} />
+        </>
+      )}
       <br />
       <Textarea
         placeholder="Please, if you wish, detail the reason"

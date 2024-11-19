@@ -53,20 +53,19 @@ describe('FeedbackModal', () => {
   describe('Renderização inicial', () => {
     it('deve renderizar componentes básicos', () => {
       renderFeedbackModal()
-
-      expect(screen.getByText(/we appreaciate your feedback/i)).toBeInTheDocument()
-      expect(screen.getByText(/how can we improve/i)).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /skip/i })).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /send/i })).toBeInTheDocument()
-      expect(screen.getByPlaceholderText(/please, if you wish/i)).toBeInTheDocument()
+      
+      expect(screen.getByText(/Agradecemos sua avaliação/i)).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /Responder depois/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /Enviar/i })).toBeInTheDocument()
+      expect(screen.getByPlaceholderText(/Caso queira, detalhe o motivo/i)).toBeInTheDocument()
     })
 
-    it('deve mostrar ButtonGroup apenas quando score <= 7', () => {
-      // Com score > 7
+    it('deve mostrar ButtonGroup apenas quando score < 7', () => {
+      // Com score => 7
       renderFeedbackModal()
       expect(screen.queryByTestId('button-group')).not.toBeInTheDocument()
 
-      // Com score <= 7
+      // Com score < 7
       renderFeedbackModal({ ...mockProps, score: 6 })
       expect(screen.getByTestId('button-group')).toBeInTheDocument()
     })
@@ -76,7 +75,7 @@ describe('FeedbackModal', () => {
     it('deve atualizar feedback quando o usuário digita no textarea', () => {
       renderFeedbackModal()
       
-      const textarea = screen.getByPlaceholderText(/please, if you wish/i)
+      const textarea = screen.getByPlaceholderText(/Caso queira, detalhe o motivo/i)
       fireEvent.change(textarea, { target: { value: 'Great service!' } })
 
       expect(textarea).toHaveValue('Great service!')
@@ -85,7 +84,7 @@ describe('FeedbackModal', () => {
     it('deve chamar onReturn quando clicar em Skip', () => {
       renderFeedbackModal()
       
-      const skipButton = screen.getByRole('button', { name: /skip/i })
+      const skipButton = screen.getByRole('button', { name: /Responder depois/i })
       fireEvent.click(skipButton)
 
       expect(mockProps.onReturn).toHaveBeenCalled()
@@ -106,11 +105,11 @@ describe('FeedbackModal', () => {
       renderFeedbackModal()
       
       // Digite feedback
-      const textarea = screen.getByPlaceholderText(/please, if you wish/i)
+      const textarea = screen.getByPlaceholderText(/Caso queira, detalhe o motivo/i)
       fireEvent.change(textarea, { target: { value: 'Great service!' } })
 
       // Clique em enviar
-      const sendButton = screen.getByRole('button', { name: /send/i })
+      const sendButton = screen.getByRole('button', { name: /Enviar/i })
       fireEvent.click(sendButton)
 
       await waitFor(() => {
@@ -133,7 +132,7 @@ describe('FeedbackModal', () => {
       vi.mocked(axios.post).mockRejectedValueOnce(new Error('Network error'))
       renderFeedbackModal()
       
-      const sendButton = screen.getByRole('button', { name: /send/i })
+      const sendButton = screen.getByRole('button', { name: /Enviar/i })
       fireEvent.click(sendButton)
 
       await waitFor(() => {
@@ -146,7 +145,7 @@ describe('FeedbackModal', () => {
     it('deve enviar selectedOption quando definido', async () => {
       renderFeedbackModal({ ...mockProps, selectedOption: 3 })
       
-      const sendButton = screen.getByRole('button', { name: /send/i })
+      const sendButton = screen.getByRole('button', { name: /Enviar/i })
       fireEvent.click(sendButton)
 
       await waitFor(() => {
@@ -168,7 +167,7 @@ describe('FeedbackModal', () => {
         const { container } = renderFeedbackModal({ ...mockProps, score })
         const buttonGroup = screen.queryByTestId('button-group')
         
-        if (score <= 7) {
+        if (score < 7) {
           expect(buttonGroup).toBeInTheDocument()
         } else {
           expect(buttonGroup).not.toBeInTheDocument()

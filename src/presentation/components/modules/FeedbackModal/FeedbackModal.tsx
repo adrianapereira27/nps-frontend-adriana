@@ -40,28 +40,28 @@ export const FeedbackModal = ({ onFinish, onReturn, login, score, selectedOption
   return (
     <S.FeedbackDialog>
       <AppBar />
-      <h4>We appreaciate your feedback!</h4>
+      <h4>Agradecemos sua avaliação!</h4>
       {score < 7 && (
         <>
-          <h6>How can we improve? Use the buttons or the comments field below to deepen your evaluation.</h6>
+          <h6>Como podemos melhorar? Utilize os botões abaixo e/ou o campo de comentários para aprofundar sua avaliação.</h6>
           <ButtonGroup onSelect={onOptionSelect} />
         </>
       )}
       <br />
       <Textarea
-        placeholder="Please, if you wish, detail the reason"
+        placeholder="Caso queira, detalhe o motivo"
         value={feedback}
         onChange={(e: { target: { value: SetStateAction<string>; }; }) => setFeedback(e.target.value)}
         width="600px" 
       />
       <div style={{ textAlign: 'right' }}>
         <Button 
-          label="Skip" 
+          label="Responder depois" 
           onClick={onReturn}         
           type="button"        
         />
         <Button 
-          label="Send" 
+          label="Enviar" 
           onClick={handleFinish}         
           type="button" 
           color='#00AB5D' 

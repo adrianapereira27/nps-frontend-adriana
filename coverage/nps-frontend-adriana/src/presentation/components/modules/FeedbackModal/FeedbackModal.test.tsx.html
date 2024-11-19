@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>114/114</span>
+                <span class='fraction'>113/113</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>114/114</span>
+                <span class='fraction'>113/113</span>
             </div>
         
             
@@ -244,8 +244,7 @@
 <a name='L179'></a><a href='#L179'>179</a>
 <a name='L180'></a><a href='#L180'>180</a>
 <a name='L181'></a><a href='#L181'>181</a>
-<a name='L182'></a><a href='#L182'>182</a>
-<a name='L183'></a><a href='#L183'>183</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L182'></a><a href='#L182'>182</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -301,7 +300,6 @@
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -415,11 +413,11 @@
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">5x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -482,20 +480,19 @@ describe('FeedbackModal', () =&gt; {
   describe('Renderização inicial', () =&gt; {
     it('deve renderizar componentes básicos', () =&gt; {
       renderFeedbackModal()
-&nbsp;
-      expect(screen.getByText(/we appreaciate your feedback/i)).toBeInTheDocument()
-      expect(screen.getByText(/how can we improve/i)).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /skip/i })).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /send/i })).toBeInTheDocument()
-      expect(screen.getByPlaceholderText(/please, if you wish/i)).toBeInTheDocument()
+      
+      expect(screen.getByText(/Agradecemos sua avaliação/i)).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /Responder depois/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /Enviar/i })).toBeInTheDocument()
+      expect(screen.getByPlaceholderText(/Caso queira, detalhe o motivo/i)).toBeInTheDocument()
     })
 &nbsp;
-    it('deve mostrar ButtonGroup apenas quando score &lt;= 7', () =&gt; {
-      // Com score &gt; 7
+    it('deve mostrar ButtonGroup apenas quando score &lt; 7', () =&gt; {
+      // Com score =&gt; 7
       renderFeedbackModal()
       expect(screen.queryByTestId('button-group')).not.toBeInTheDocument()
 &nbsp;
-      // Com score &lt;= 7
+      // Com score &lt; 7
       renderFeedbackModal({ ...mockProps, score: 6 })
       expect(screen.getByTestId('button-group')).toBeInTheDocument()
     })
@@ -505,7 +502,7 @@ describe('FeedbackModal', () =&gt; {
     it('deve atualizar feedback quando o usuário digita no textarea', () =&gt; {
       renderFeedbackModal()
       
-      const textarea = screen.getByPlaceholderText(/please, if you wish/i)
+      const textarea = screen.getByPlaceholderText(/Caso queira, detalhe o motivo/i)
       fireEvent.change(textarea, { target: { value: 'Great service!' } })
 &nbsp;
       expect(textarea).toHaveValue('Great service!')
@@ -514,7 +511,7 @@ describe('FeedbackModal', () =&gt; {
     it('deve chamar onReturn quando clicar em Skip', () =&gt; {
       renderFeedbackModal()
       
-      const skipButton = screen.getByRole('button', { name: /skip/i })
+      const skipButton = screen.getByRole('button', { name: /Responder depois/i })
       fireEvent.click(skipButton)
 &nbsp;
       expect(mockProps.onReturn).toHaveBeenCalled()
@@ -535,11 +532,11 @@ describe('FeedbackModal', () =&gt; {
       renderFeedbackModal()
       
       // Digite feedback
-      const textarea = screen.getByPlaceholderText(/please, if you wish/i)
+      const textarea = screen.getByPlaceholderText(/Caso queira, detalhe o motivo/i)
       fireEvent.change(textarea, { target: { value: 'Great service!' } })
 &nbsp;
       // Clique em enviar
-      const sendButton = screen.getByRole('button', { name: /send/i })
+      const sendButton = screen.getByRole('button', { name: /Enviar/i })
       fireEvent.click(sendButton)
 &nbsp;
       await waitFor(() =&gt; {
@@ -562,7 +559,7 @@ describe('FeedbackModal', () =&gt; {
       vi.mocked(axios.post).mockRejectedValueOnce(new Error('Network error'))
       renderFeedbackModal()
       
-      const sendButton = screen.getByRole('button', { name: /send/i })
+      const sendButton = screen.getByRole('button', { name: /Enviar/i })
       fireEvent.click(sendButton)
 &nbsp;
       await waitFor(() =&gt; {
@@ -575,7 +572,7 @@ describe('FeedbackModal', () =&gt; {
     it('deve enviar selectedOption quando definido', async () =&gt; {
       renderFeedbackModal({ ...mockProps, selectedOption: 3 })
       
-      const sendButton = screen.getByRole('button', { name: /send/i })
+      const sendButton = screen.getByRole('button', { name: /Enviar/i })
       fireEvent.click(sendButton)
 &nbsp;
       await waitFor(() =&gt; {
@@ -597,7 +594,7 @@ describe('FeedbackModal', () =&gt; {
         const { container } = renderFeedbackModal({ ...mockProps, score })
         const buttonGroup = screen.queryByTestId('button-group')
         
-        if (score &lt;= 7) {
+        if (score &lt; 7) {
           expect(buttonGroup).toBeInTheDocument()
         } else {
           expect(buttonGroup).not.toBeInTheDocument()
@@ -616,7 +613,7 @@ describe('FeedbackModal', () =&gt; {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2024-11-11T00:23:23.756Z
+                at 2024-11-19T22:59:06.310Z
             </div>
         <script src="../../../../../../prettify.js"></script>
         <script>

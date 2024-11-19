@@ -4,7 +4,6 @@ import { AppBar } from '../../features/AppBar';
 import { Input } from "../../elements/Input";
 import { Button } from '../../elements/Button';
 import { toast } from 'react-toastify';
-import axios from 'axios';
 
 interface InitialModalProps {
   onStart: (login: string) => void;
@@ -44,8 +43,8 @@ export const InitialModal = ({ onStart }: InitialModalProps) => {
       const contentDisposition = response.headers.get('content-disposition');
       let filename = 'nps_export.csv';
       if (contentDisposition) {
-        const filenameMatch = contentDisposition.match(/filename=([^;]+)/);
-        if (filenameMatch) {
+        const filenameMatch = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+        if (filenameMatch && filenameMatch[1]) {
           filename = filenameMatch[1].replace(/["']/g, '');
         }
       }
@@ -60,7 +59,7 @@ export const InitialModal = ({ onStart }: InitialModalProps) => {
       link.download = filename;
       document.body.appendChild(link);
       link.click();
-      link.remove();
+      document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
 
       toast.success('Download realizado com sucesso!');
@@ -87,7 +86,7 @@ export const InitialModal = ({ onStart }: InitialModalProps) => {
         }}        
       />      
       <Button 
-        label="Start" 
+        label="Iniciar" 
         onClick={handleStart}         
         type="button" 
         disabled={!login} 
@@ -97,7 +96,8 @@ export const InitialModal = ({ onStart }: InitialModalProps) => {
         label="CSV Log" 
         onClick={handleDownloadCsv}         
         type="button"          
-        color='#00AB5D' 
+        color='#00AB5D'
+        disabled={isLoading} 
       />     
     </S.InitialDialog>
   );

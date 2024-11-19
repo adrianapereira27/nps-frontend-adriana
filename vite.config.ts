@@ -18,6 +18,14 @@ export default defineConfig({
     globals: true,
     environment: 'jsdom',
     setupFiles: './src/test/setup.ts',
+    include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    deps: {
+      optimizer: {
+        web: {
+          include: ['@testing-library/user-event']
+        }
+      }
+    },
     coverage: {      
       reporter: ['text', 'json', 'html'], // Formatos de relatórios
       exclude: ['node_modules/', 'src/setupTests.ts'], // Arquivos/pastas a serem excluídos

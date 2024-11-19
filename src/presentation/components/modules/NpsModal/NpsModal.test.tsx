@@ -57,9 +57,9 @@ describe('NpsModal', () => {
     it('deve renderizar componentes básicos', () => {
       renderNpsModal()
 
-      expect(screen.getByText(/consider 0\(zero\) as very unlikely/i)).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /ask me later/i })).toBeInTheDocument()
-      expect(screen.getByRole('button', { name: /send/i })).toBeInTheDocument()
+      expect(screen.getByText(/Sendo zero não recomendaria e 10 recomendaria totalmente/i)).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /Responder depois/i })).toBeInTheDocument()
+      expect(screen.getByRole('button', { name: /Enviar/i })).toBeInTheDocument()
       expect(screen.getByTestId('rating-scale')).toBeInTheDocument()
     })
 
@@ -102,10 +102,10 @@ describe('NpsModal', () => {
   })
 
   describe('Interações do usuário', () => {
-    it('deve chamar onReturn quando clicar em "Ask me later"', () => {
+    it('deve chamar onReturn quando clicar em "Responder depois"', () => {
       renderNpsModal()
       
-      const laterButton = screen.getByRole('button', { name: /ask me later/i })
+      const laterButton = screen.getByRole('button', { name: /Responder depois/i })
       fireEvent.click(laterButton)
 
       expect(mockOnReturn).toHaveBeenCalled()
@@ -114,7 +114,7 @@ describe('NpsModal', () => {
     it('deve mostrar aviso quando tentar enviar sem selecionar score', () => {
       renderNpsModal()
       
-      const sendButton = screen.getByRole('button', { name: /send/i })
+      const sendButton = screen.getByRole('button', { name: /Enviar/i })
       fireEvent.click(sendButton)
 
       expect(toast.warning).toHaveBeenCalledWith('Selecione uma nota antes de enviar.')
@@ -129,7 +129,7 @@ describe('NpsModal', () => {
       fireEvent.click(ratingButton)
 
       // Clica em enviar
-      const sendButton = screen.getByRole('button', { name: /send/i })
+      const sendButton = screen.getByRole('button', { name: /Enviar/i })
       fireEvent.click(sendButton)
 
       expect(mockSetScore).toHaveBeenCalledWith(8)
@@ -148,7 +148,7 @@ describe('NpsModal', () => {
         fireEvent.click(ratingButton)
         
         // Clica em enviar após cada seleção
-        const sendButton = screen.getByRole('button', { name: /send/i })
+        const sendButton = screen.getByRole('button', { name: /Enviar/i })
         fireEvent.click(sendButton)
 
         expect(mockSetScore).toHaveBeenCalledWith(rating)

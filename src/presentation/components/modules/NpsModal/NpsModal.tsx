@@ -43,16 +43,16 @@ export const NpsModal = ({ setScore, onReturn, login }: NpsModalProps) => {
     <S.NpsDialog>
       <AppBar />
       <h4>{question || "Carregando pergunta..."}</h4>
-      <h6>Consider 0(zero) as very unlikely and 10 as extremely likely</h6>
+      <h6>Sendo zero não recomendaria e 10 recomendaria totalmente</h6>
       <RatingScale score={score} setScore={setLocalScore} />
       <div style={{ textAlign: 'right' }}>
         <Button 
-          label="Ask me later" 
+          label="Responder depois" 
           onClick={onReturn}         
           type="button"        
         />
         <Button 
-          label="Send" 
+          label="Enviar" 
           onClick={handleSend}         
           type="button" 
           color='#00AB5D' 

@@ -84,6 +84,38 @@ describe('NpsModal', () => {
       })
     })
 
+    it('deve lidar com resposta da API vazia', async () => {
+      vi.mocked(axios.get).mockResolvedValueOnce({ data: '' })
+  
+      renderNpsModal()
+  
+      await waitFor(() => {
+        expect(screen.getByText(/Carregando pergunta.../i)).toBeInTheDocument()
+      })
+    })
+
+    it('deve chamar onReturn com diferentes condições de login', () => {
+      const testLogins = ['', null, 'user123', undefined]
+  
+      testLogins.forEach(login => {
+        const { unmount } = render(
+          <NpsModal 
+            setScore={mockSetScore} 
+            onReturn={mockOnReturn} 
+            login={login as string} 
+          />
+        )
+  
+        const laterButton = screen.getByRole('button', { name: /Responder depois/i })
+        fireEvent.click(laterButton)
+  
+        expect(mockOnReturn).toHaveBeenCalled()
+        
+        unmount()
+        vi.clearAllMocks()
+      })
+    })
+
     it('deve mostrar toast de erro quando a requisição falha', async () => {
       const errorMessage = 'Error fetching question'
       vi.mocked(axios.get).mockRejectedValueOnce({ 

@@ -1,44 +1,43 @@
 import { describe, it, expect, vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
+import { ModalSwitcher } from './ModalSwitcher';
 
 // Mock dos componentes internos
 vi.mock('../../modules/InitialModal', () => ({
-  InitialModal: vi.fn(({ onStart }) => (
-    <div data-testid="initial-modal">
-      <button onClick={() => onStart('testuser')}>Simular Início</button>
-    </div>
-  ))
-}));
-
-vi.mock('../../modules/NpsModal', () => ({
-  NpsModal: vi.fn(({ setScore, onReturn, login }) => (
-    <div data-testid="nps-modal">
-      <div>Login: {login}</div>
-      <button onClick={() => setScore(8)}>Definir Nota 8</button>
-      <button onClick={onReturn}>Voltar</button>
-    </div>
-  ))
-}));
-
-vi.mock('../../modules/FeedbackModal', () => ({
-  FeedbackModal: vi.fn(({ 
-    onFinish, 
-    onReturn, 
-    login, 
-    score, 
-    onOptionSelect 
-  }) => (
-    <div data-testid="feedback-modal">
-      <div>Login: {login}</div>
-      <div>Nota: {score}</div>
-      <button onClick={() => onOptionSelect(1)}>Selecionar Opção 1</button>
-      <button onClick={onFinish}>Finalizar</button>
-      <button onClick={onReturn}>Voltar</button>
-    </div>
-  ))
-}));
-
-import { ModalSwitcher } from './ModalSwitcher';
+    InitialModal: vi.fn(({ onStart }) => (
+      <div data-testid="initial-modal">
+        <button onClick={() => onStart('testuser')}>Simular Início</button>
+      </div>
+    ))
+  }));
+  
+  vi.mock('../../modules/NpsModal', () => ({
+    NpsModal: vi.fn(({ setScore, onReturn, login }) => (
+      <div data-testid="nps-modal">
+        <div>Login: {login}</div>
+        <button onClick={() => setScore(8)}>Definir Nota 8</button>
+        <button onClick={onReturn}>Voltar</button>
+      </div>
+    ))
+  }));
+  
+  vi.mock('../../modules/FeedbackModal', () => ({
+    FeedbackModal: vi.fn(({ 
+      onFinish, 
+      onReturn, 
+      login, 
+      score, 
+      onOptionSelect 
+    }) => (
+      <div data-testid="feedback-modal">
+        <div>Login: {login}</div>
+        <div>Nota: {score}</div>
+        <button onClick={() => onOptionSelect(1)}>Selecionar Opção 1</button>
+        <button onClick={onFinish}>Finalizar</button>
+        <button onClick={onReturn}>Voltar</button>
+      </div>
+    ))
+  }));
 
 describe('Componente ModalSwitcher', () => {
   it('renderiza o InitialModal inicialmente', () => {

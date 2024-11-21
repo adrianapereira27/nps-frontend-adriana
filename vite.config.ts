@@ -29,7 +29,7 @@ export default defineConfig({
     coverage: {      
       reporter: ['text', 'json', 'html'], // Formatos de relatórios
       exclude: ['node_modules/', 'src/setupTests.ts'], // Arquivos/pastas a serem excluídos
-      clean: false, // Impede a limpeza automática da pasta de cobertura
+      clean: true, // limpeza automática da pasta de cobertura
     },
     css: true
   }

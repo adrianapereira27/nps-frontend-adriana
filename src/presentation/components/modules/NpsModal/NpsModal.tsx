@@ -28,7 +28,13 @@ export const NpsModal = ({ setScore, onReturn, login }: NpsModalProps) => {
         setQuestion(response.data);
       }
     })
-    .catch(error => toast.error("Erro ao buscar a pergunta:", error.response.data));
+    .catch(error => {
+      const errorMessage = error.response?.data?.message || 
+                          error.response?.data || 
+                          "Erro ao buscar a pergunta";
+      toast.error(errorMessage);
+      onReturn();
+    });      
   }, [login]);
       
   const handleSend = () => {

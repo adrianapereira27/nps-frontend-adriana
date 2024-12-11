@@ -28,6 +28,8 @@ export const ModalSwitcher = () => {
 
   const handleReturn = () => {
     setStep(0); // Retorna para o InitialModal
+    setLogin('');   
+    setScore(null);
   };
 
   switch (step) {

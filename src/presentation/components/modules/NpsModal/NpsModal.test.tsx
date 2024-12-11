@@ -119,16 +119,17 @@ describe('NpsModal', () => {
     it('deve mostrar toast de erro quando a requisição falha', async () => {
       const errorMessage = 'Error fetching question'
       vi.mocked(axios.get).mockRejectedValueOnce({ 
-        response: { data: errorMessage } 
+        response: { 
+          data: { 
+            message: errorMessage 
+          } 
+        } 
       })
 
       renderNpsModal()
 
       await waitFor(() => {
-        expect(toast.error).toHaveBeenCalledWith(
-          'Erro ao buscar a pergunta:',
-          errorMessage
-        )
+        expect(toast.error).toHaveBeenCalledWith(errorMessage);
       })
     })
   })
